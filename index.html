@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #fullscreen-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #fullscreen-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        #fullscreen-overlay.active {
+            opacity: 1;
+        }
+
+        #fullscreen-overlay:hover {
+            cursor: none;
+        }
+
+        #fullscreen-overlay:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+    <title>Fullscreen Example</title>
+</head>
+
+<body>
+    <div id="fullscreen-container">
+        <div id="fullscreen-overlay"></div>
+        <iframe id="fullscreen" src="https://i.simmer.io/@aminnurazziz/hardware"></iframe>
+    </div>
+
+    <script>
+        var iframe = document.getElementById('fullscreen');
+        var overlay = document.getElementById('fullscreen-overlay');
+
+        function openFullscreen() {
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.mozRequestFullScreen) {
+                iframe.mozRequestFullScreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) {
+                iframe.msRequestFullscreen();
+            }
+        }
+
+        overlay.addEventListener('click', function () {
+            openFullscreen();
+        });
+
+        document.addEventListener('fullscreenchange', function () {
+            if (document.fullscreenElement) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                openFullscreen();
+            }
+        });
+    </script>
+</body>
+
+</html>
